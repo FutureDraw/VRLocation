@@ -36,7 +36,6 @@ public class XRSceneTeleportTrigger : MonoBehaviour
     private System.Collections.IEnumerator TransitionToScene(XROrigin xrOrigin)
     {
         isTransitioning = true;
-
         // Загружаем новую сцену
         AsyncOperation loadOp = SceneManager.LoadSceneAsync(targetSceneName, LoadSceneMode.Additive);
         while (!loadOp.isDone)
@@ -71,8 +70,40 @@ public class XRSceneTeleportTrigger : MonoBehaviour
 
         // Устанавливаем новую сцену активной
         SceneManager.SetActiveScene(newScene);
-
-
         isTransitioning = false;
+    }
+
+    private void ForceReactivateXR(XROrigin xrOrigin)
+    {
+        // Реактивация интеракторов
+        var interactors = xrOrigin.GetComponentsInChildren<XRBaseInteractor>(true);
+        foreach (var interactor in interactors)
+        {
+            interactor.enabled = false;
+            interactor.enabled = true;
         }
+
+        // Реактивация телепортации
+        var teleportationProviders = xrOrigin.GetComponentsInChildren<TeleportationProvider>(true);
+        foreach (var provider in teleportationProviders)
+        {
+            provider.enabled = false;
+            provider.enabled = true;
+        }
+
+        var teleportAreas = GameObject.FindObjectsOfType<TeleportationArea>(true);
+        foreach (var area in teleportAreas)
+        {
+            area.enabled = false;
+            area.enabled = true;
+        }
+
+        var teleportAnchors = GameObject.FindObjectsOfType<TeleportationAnchor>(true);
+        foreach (var anchor in teleportAnchors)
+        {
+            anchor.enabled = false;
+            anchor.enabled = true;
+        }
+    }
+
 }
