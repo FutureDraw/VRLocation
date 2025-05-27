@@ -1,9 +1,9 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
 /// <summary>
-/// Управляет настройками звуков
+/// РЈРїСЂР°РІР»СЏРµС‚ РЅР°СЃС‚СЂРѕР№РєР°РјРё Р·РІСѓРєРѕРІ
 /// </summary>
 public class AudioSettings : MonoBehaviour
 {

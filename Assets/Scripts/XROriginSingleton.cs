@@ -1,4 +1,4 @@
-using Unity.XR.CoreUtils;
+﻿using Unity.XR.CoreUtils;
 using UnityEngine;
 
 public class XROriginSingleton : MonoBehaviour

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -11,7 +11,7 @@ public class TwoHandGrabbable : XRGrabInteractable
         if (!selectingInteractors.Contains(args.interactorObject))
             selectingInteractors.Add(args.interactorObject);
 
-        // Не вызывать base, чтобы не выбрасывать предыдущую руку
+        // РќРµ РІС‹Р·С‹РІР°С‚СЊ base, С‡С‚РѕР±С‹ РЅРµ РІС‹Р±СЂР°СЃС‹РІР°С‚СЊ РїСЂРµРґС‹РґСѓС‰СѓСЋ СЂСѓРєСѓ
         if (selectingInteractors.Count == 1)
             base.OnSelectEntered(args);
     }

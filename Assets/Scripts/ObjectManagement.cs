@@ -1,15 +1,15 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Управление параметрами появляющегося объека через UI
+/// РЈРїСЂР°РІР»РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР°РјРё РїРѕСЏРІР»СЏСЋС‰РµРіРѕСЃСЏ РѕР±СЉРµРєР° С‡РµСЂРµР· UI
 /// </summary>
 public class ObjectManagement : MonoBehaviour
 {
     [Header("Prefab")]
-    public GameObject objectPrefab;             // Префаб для создания
-    public Transform spawnPoint;                // Место, где появится объект
-    private GameObject targetObject;            // Активный объект
+    public GameObject objectPrefab;             // РџСЂРµС„Р°Р± РґР»СЏ СЃРѕР·РґР°РЅРёСЏ
+    public Transform spawnPoint;                // РњРµСЃС‚Рѕ, РіРґРµ РїРѕСЏРІРёС‚СЃСЏ РѕР±СЉРµРєС‚
+    private GameObject targetObject;            // РђРєС‚РёРІРЅС‹Р№ РѕР±СЉРµРєС‚
     private Rigidbody rb;
 
     [Header("UI Elements")]

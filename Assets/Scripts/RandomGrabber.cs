@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(Rigidbody), typeof(Collider), typeof(XRGrabInteractable))]
@@ -29,10 +29,10 @@ public class RandomGrabber : MonoBehaviour
 
     void ApplyRandomProperties()
     {
-        // Случайная масса
+        // РЎР»СѓС‡Р°Р№РЅР°СЏ РјР°СЃСЃР°
         rb.mass = Random.Range(0.1f, 50f);
 
-        // Случайные параметры материала
+        // РЎР»СѓС‡Р°Р№РЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹ РјР°С‚РµСЂРёР°Р»Р°
         PhysicMaterial mat = new PhysicMaterial("RandomMat")
         {
             dynamicFriction = Random.Range(0f, 1f),
@@ -44,7 +44,7 @@ public class RandomGrabber : MonoBehaviour
 
         col.material = mat;
 
-        // (Необязательно) отладочный вывод в консоль
+        // (РќРµРѕР±СЏР·Р°С‚РµР»СЊРЅРѕ) РѕС‚Р»Р°РґРѕС‡РЅС‹Р№ РІС‹РІРѕРґ РІ РєРѕРЅСЃРѕР»СЊ
         Debug.Log($"[RandomProperties] mass={rb.mass}, dynFric={mat.dynamicFriction}, bounce={mat.bounciness}");
     }
 }

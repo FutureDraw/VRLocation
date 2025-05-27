@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 public class GravityZone : MonoBehaviour
 {
@@ -8,7 +8,7 @@ public class GravityZone : MonoBehaviour
     {
         Rigidbody rb = other.attachedRigidbody;
 
-        // Исключаем игрока по тегу
+        // РСЃРєР»СЋС‡Р°РµРј РёРіСЂРѕРєР° РїРѕ С‚РµРіСѓ
         if (rb != null && !other.CompareTag("Player"))
         {
             rb.AddForce(customGravity, ForceMode.Acceleration);

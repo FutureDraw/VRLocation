@@ -1,12 +1,12 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class colorChanger : MonoBehaviour
 {
-    [Header("Список источников света")]
+    [Header("РЎРїРёСЃРѕРє РёСЃС‚РѕС‡РЅРёРєРѕРІ СЃРІРµС‚Р°")]
     public Light[] roomLights;
 
-    [Header("Режим цвета")]
+    [Header("Р РµР¶РёРј С†РІРµС‚Р°")]
     public bool useRandomColor = true;
     public Color chosenColor = Color.cyan;
 
@@ -39,6 +39,6 @@ public class colorChanger : MonoBehaviour
             }
         }
 
-        Debug.Log($"[LightColorChangerMulti] Цвет освещения изменён на: {newColor}");
+        Debug.Log($"[LightColorChangerMulti] Р¦РІРµС‚ РѕСЃРІРµС‰РµРЅРёСЏ РёР·РјРµРЅС‘РЅ РЅР°: {newColor}");
     }
 }

@@ -1,16 +1,16 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class XRSceneTeleportTrigger : MonoBehaviour
 {
-    [Header("Сцена для загрузки")]
+    [Header("РЎС†РµРЅР° РґР»СЏ Р·Р°РіСЂСѓР·РєРё")]
     public string targetSceneName;
 
-    [Header("Имя точки спауна в новой сцене")]
+    [Header("РРјСЏ С‚РѕС‡РєРё СЃРїР°СѓРЅР° РІ РЅРѕРІРѕР№ СЃС†РµРЅРµ")]
     public string targetSpawnPointName;
 
-    [Header("Кулдаун на перемещение (в секундах)")]
+    [Header("РљСѓР»РґР°СѓРЅ РЅР° РїРµСЂРµРјРµС‰РµРЅРёРµ (РІ СЃРµРєСѓРЅРґР°С…)")]
     public float cooldownTime = 1f;
 
     private bool isTransitioning = false;

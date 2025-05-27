@@ -1,20 +1,20 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class ScaleChanger : MonoBehaviour
 {
     public enum ScaleType { Micro, Normal }
 
-    [Header("Тип масштаба")]
+    [Header("РўРёРї РјР°СЃС€С‚Р°Р±Р°")]
     public ScaleType scaleType = ScaleType.Micro;
 
-    [Header("Целевой объект для масштабирования (например, XR Origin)")]
+    [Header("Р¦РµР»РµРІРѕР№ РѕР±СЉРµРєС‚ РґР»СЏ РјР°СЃС€С‚Р°Р±РёСЂРѕРІР°РЅРёСЏ (РЅР°РїСЂРёРјРµСЂ, XR Origin)")]
     public Transform targetToScale;
 
-    [Header("Камера игрока (XR Camera внутри XR Origin)")]
+    [Header("РљР°РјРµСЂР° РёРіСЂРѕРєР° (XR Camera РІРЅСѓС‚СЂРё XR Origin)")]
     public Transform playerCamera;
 
-    [Header("Размеры")]
+    [Header("Р Р°Р·РјРµСЂС‹")]
     public Vector3 microScale = new Vector3(0.1f, 0.1f, 0.1f);
     public Vector3 normalScale = Vector3.one;
 
@@ -35,10 +35,10 @@ public class ScaleChanger : MonoBehaviour
     {
         if (targetToScale == null || playerCamera == null) return;
 
-        // Сохраняем мировую позицию головы
+        // РЎРѕС…СЂР°РЅСЏРµРј РјРёСЂРѕРІСѓСЋ РїРѕР·РёС†РёСЋ РіРѕР»РѕРІС‹
         Vector3 cameraWorldPosBefore = playerCamera.position;
 
-        // Меняем масштаб
+        // РњРµРЅСЏРµРј РјР°СЃС€С‚Р°Р±
         switch (scaleType)
         {
             case ScaleType.Micro:
@@ -49,14 +49,14 @@ public class ScaleChanger : MonoBehaviour
                 break;
         }
 
-        // Вычисляем смещение после масштабирования
+        // Р’С‹С‡РёСЃР»СЏРµРј СЃРјРµС‰РµРЅРёРµ РїРѕСЃР»Рµ РјР°СЃС€С‚Р°Р±РёСЂРѕРІР°РЅРёСЏ
         Vector3 cameraWorldPosAfter = playerCamera.position;
         Vector3 offset = cameraWorldPosBefore - cameraWorldPosAfter;
 
-        // Сдвигаем XR Origin на это смещение
+        // РЎРґРІРёРіР°РµРј XR Origin РЅР° СЌС‚Рѕ СЃРјРµС‰РµРЅРёРµ
         targetToScale.position += offset;
 
-        Debug.Log($"[ScaleChanger] Масштаб изменён на {targetToScale.localScale}, позиция скорректирована.");
+        Debug.Log($"[ScaleChanger] РњР°СЃС€С‚Р°Р± РёР·РјРµРЅС‘РЅ РЅР° {targetToScale.localScale}, РїРѕР·РёС†РёСЏ СЃРєРѕСЂСЂРµРєС‚РёСЂРѕРІР°РЅР°.");
 
         Destroy(gameObject);
     }
