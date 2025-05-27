@@ -1,4 +1,3 @@
-using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -11,99 +10,129 @@ public class XRSceneTeleportTrigger : MonoBehaviour
     [Header("Имя точки спауна в новой сцене")]
     public string targetSpawnPointName;
 
+    [Header("Кулдаун на перемещение (в секундах)")]
+    public float cooldownTime = 1f;
+
     private bool isTransitioning = false;
-
-    public GameObject player;
-
-    public void Update()
-    {
-        if (isTransitioning) player.SetActive(false);
-        else player.SetActive(true);
-    }
+    private float lastTeleportTime = -Mathf.Infinity;
 
     private void OnTriggerEnter(Collider other)
     {
         if (isTransitioning) return;
+        if (Time.time < lastTeleportTime + cooldownTime) return;
 
-        // Проверим, содержит ли объект компонент XROrigin (это XR игрок)
-        var origin = other.GetComponentInParent<XROrigin>();
-        if (origin != null)
+        if (other.GetComponentInParent<Unity.XR.CoreUtils.XROrigin>() != null)
         {
-            StartCoroutine(TransitionToScene(origin));
+            StartCoroutine(TransitionToScene());
         }
     }
 
-    private System.Collections.IEnumerator TransitionToScene(XROrigin xrOrigin)
+    private System.Collections.IEnumerator TransitionToScene()
     {
         isTransitioning = true;
-        // Загружаем новую сцену
-        AsyncOperation loadOp = SceneManager.LoadSceneAsync(targetSceneName, LoadSceneMode.Additive);
-        while (!loadOp.isDone)
-            yield return null;
+        lastTeleportTime = Time.time;
 
-        // Находим сцену и точку спауна
+        if (!IsSceneAlreadyLoaded(targetSceneName))
+        {
+            AsyncOperation loadOp = SceneManager.LoadSceneAsync(targetSceneName, LoadSceneMode.Additive);
+            while (!loadOp.isDone) yield return null;
+        }
+
+        var xrOrigin = XROriginSingleton.Instance;
+        if (xrOrigin == null)
+        {
+            Debug.LogError("XROriginSingleton not found.");
+            yield break;
+        }
+
         Scene newScene = SceneManager.GetSceneByName(targetSceneName);
         GameObject[] rootObjects = newScene.GetRootGameObjects();
 
-        Transform spawnTransform = null;
+        Transform spawnPoint = null;
         foreach (var obj in rootObjects)
         {
             if (obj.name == targetSpawnPointName)
             {
-                spawnTransform = obj.transform;
+                spawnPoint = obj.transform;
                 break;
             }
         }
 
-        if (spawnTransform != null)
+        if (spawnPoint != null)
         {
-            // Перемещаем XR Origin (весь риг)
-            xrOrigin.transform.position = spawnTransform.position;
-            xrOrigin.transform.rotation = spawnTransform.rotation;
+            xrOrigin.transform.position = spawnPoint.position;
+            xrOrigin.transform.rotation = spawnPoint.rotation;
+            SceneManager.MoveGameObjectToScene(xrOrigin.gameObject, newScene);
+            SceneManager.SetActiveScene(newScene);
+            UpdateLighting();
+            RemoveDuplicateXROrigins();
+            ForceReactivateXR(xrOrigin);
         }
 
-        // Выгружаем старую сцену (где находится XR Origin)
-        Scene currentScene = xrOrigin.gameObject.scene;
-        AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(currentScene);
-        while (!unloadOp.isDone)
-            yield return null;
-
-        // Устанавливаем новую сцену активной
-        SceneManager.SetActiveScene(newScene);
         isTransitioning = false;
     }
 
-    private void ForceReactivateXR(XROrigin xrOrigin)
+    private bool IsSceneAlreadyLoaded(string sceneName)
     {
-        // Реактивация интеракторов
-        var interactors = xrOrigin.GetComponentsInChildren<XRBaseInteractor>(true);
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            if (SceneManager.GetSceneAt(i).name == sceneName)
+                return true;
+        }
+        return false;
+    }
+
+    private void RemoveDuplicateXROrigins()
+    {
+        var allOrigins = FindObjectsOfType<Unity.XR.CoreUtils.XROrigin>();
+        foreach (var origin in allOrigins)
+        {
+            if (origin != XROriginSingleton.Instance)
+                Destroy(origin.gameObject);
+        }
+
+        var controllers = GameObject.FindGameObjectsWithTag("XRController");
+        foreach (var ctrl in controllers)
+        {
+            if (!ctrl.transform.IsChildOf(XROriginSingleton.Instance.transform))
+                Destroy(ctrl);
+        }
+    }
+
+    private void UpdateLighting()
+    {
+        RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Skybox;
+        DynamicGI.UpdateEnvironment();
+    }
+
+    private void ForceReactivateXR(Unity.XR.CoreUtils.XROrigin origin)
+    {
+        var interactors = origin.GetComponentsInChildren<XRBaseInteractor>(true);
         foreach (var interactor in interactors)
         {
             interactor.enabled = false;
             interactor.enabled = true;
         }
 
-        // Реактивация телепортации
-        var teleportationProviders = xrOrigin.GetComponentsInChildren<TeleportationProvider>(true);
-        foreach (var provider in teleportationProviders)
+        var providers = origin.GetComponentsInChildren<TeleportationProvider>(true);
+        foreach (var provider in providers)
         {
             provider.enabled = false;
             provider.enabled = true;
         }
 
-        var teleportAreas = GameObject.FindObjectsOfType<TeleportationArea>(true);
-        foreach (var area in teleportAreas)
+        var areas = GameObject.FindObjectsOfType<TeleportationArea>(true);
+        foreach (var area in areas)
         {
             area.enabled = false;
             area.enabled = true;
         }
 
-        var teleportAnchors = GameObject.FindObjectsOfType<TeleportationAnchor>(true);
-        foreach (var anchor in teleportAnchors)
+        var anchors = GameObject.FindObjectsOfType<TeleportationAnchor>(true);
+        foreach (var anchor in anchors)
         {
             anchor.enabled = false;
             anchor.enabled = true;
         }
     }
-
 }
