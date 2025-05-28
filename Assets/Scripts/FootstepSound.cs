@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 public class FootstepSound : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class FootstepSound : MonoBehaviour
 
         if (audioSource == null)
         {
-            Debug.LogError("AudioSource не назначен!");
+            Debug.LogError("AudioSource РЅРµ РЅР°Р·РЅР°С‡РµРЅ!");
         }
     }
 

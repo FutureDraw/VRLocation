@@ -1,12 +1,12 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 public class ControllerColorChanger : MonoBehaviour
 {
-    [Header("Названия объектов контроллеров")]
+    [Header("РќР°Р·РІР°РЅРёСЏ РѕР±СЉРµРєС‚РѕРІ РєРѕРЅС‚СЂРѕР»Р»РµСЂРѕРІ")]
     public string leftControllerName = "XR Controller Left(Clone)";
     public string rightControllerName = "XR Controller Right(Clone)";
 
-    [Header("Материалы")]
+    [Header("РњР°С‚РµСЂРёР°Р»С‹")]
     public Material[] materials;
 
     private int leftIndex = 0;
@@ -23,12 +23,12 @@ public class ControllerColorChanger : MonoBehaviour
         if (left != null)
             leftRenderers = left.GetComponentsInChildren<Renderer>();
         else
-            Debug.LogWarning("Левый контроллер не найден");
+            Debug.LogWarning("Р›РµРІС‹Р№ РєРѕРЅС‚СЂРѕР»Р»РµСЂ РЅРµ РЅР°Р№РґРµРЅ");
 
         if (right != null)
             rightRenderers = right.GetComponentsInChildren<Renderer>();
         else
-            Debug.LogWarning("Правый контроллер не найден");
+            Debug.LogWarning("РџСЂР°РІС‹Р№ РєРѕРЅС‚СЂРѕР»Р»РµСЂ РЅРµ РЅР°Р№РґРµРЅ");
     }
 
     public void NextLeftColor()
